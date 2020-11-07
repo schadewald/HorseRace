@@ -31,23 +31,28 @@ public class Main extends Application {
 
         Canvas horse1 = new Canvas(500, 75);
         GraphicsContext horse1GraphicsContext = horse1.getGraphicsContext2D();
-        horse1GraphicsContext.fillRect(0, 0, 600,75 );
+        horse1GraphicsContext.setFill(Color.WHITE);
+        drawHorse((horse1GraphicsContext));
 
         Canvas horse2 = new Canvas(500, 75);
         GraphicsContext horse2GraphicsContext = horse2.getGraphicsContext2D();
-        horse2GraphicsContext.fillRect(0, 0, 600,75 );
+        horse2GraphicsContext.setFill(Color.WHITE);
+        drawHorse((horse2GraphicsContext));
 
         Canvas horse3 = new Canvas(500, 75);
         GraphicsContext horse3GraphicsContext = horse3.getGraphicsContext2D();
-        horse3GraphicsContext.fillRect(0, 0, 600,75 );
+        horse3GraphicsContext.setFill(Color.WHITE);
+        drawHorse((horse3GraphicsContext));
 
         Canvas horse4 = new Canvas(500, 75);
         GraphicsContext horse4GraphicsContext = horse4.getGraphicsContext2D();
-        horse4GraphicsContext.fillRect(0, 0, 600,75 );
+        horse4GraphicsContext.setFill(Color.WHITE);
+        drawHorse((horse4GraphicsContext));
 
         Canvas horse5 = new Canvas(500, 75);
         GraphicsContext horse5GraphicsContext = horse5.getGraphicsContext2D();
-        horse5GraphicsContext.fillRect(0, 0, 600,75 );
+        horse5GraphicsContext.setFill(Color.WHITE);
+        drawHorse((horse5GraphicsContext));
 
         flowPane.setVgap(8);
         flowPane.setHgap(4);
@@ -63,19 +68,63 @@ public class Main extends Application {
         gridPane.add(flowPane, 1, 5);
 
         Group root = new Group();
+
         primaryStage.setTitle("Welcome to Horse Race!");
         primaryStage.setScene(mainScene);
 
-        final Canvas canvas = new Canvas(150,250);
-        GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.setFill(Color.BLUE);
-        graphicsContext.fillRect(75,75,100,100);
-        root.getChildren().add(canvas);
         primaryStage.show();
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
+
+    private void drawHorse(GraphicsContext gc)
+    {
+        drawBody(gc);
+        drawFrontLegs(gc);
+        drawBackLegs(gc);
+        drawHead(gc);
+    }
+    private void drawBody(GraphicsContext gc)
+    {
+        gc.beginPath();
+        gc.moveTo(5, 40);
+        gc.lineTo(50, 40);
+        gc.lineTo(50, 60);
+        gc.lineTo(5, 60);
+        gc.lineTo(5, 40);
+        gc.stroke();
+    }
+    private void drawFrontLegs(GraphicsContext gc)
+    {
+        gc.beginPath();
+        gc.moveTo(50, 60);
+        gc.lineTo(50, 70);
+        gc.lineTo(40, 70);
+        gc.lineTo(40, 60);
+        gc.stroke();
+    }
+    private void drawBackLegs(GraphicsContext gc)
+    {
+        gc.beginPath();
+        gc.moveTo(5, 60);
+        gc.lineTo(5, 70);
+        gc.lineTo(15, 70);
+        gc.lineTo(15, 60);
+        gc.stroke();
+    }
+    private void drawHead(GraphicsContext gc)
+    {
+        gc.beginPath();
+        gc.moveTo(45, 40);
+        gc.lineTo(45, 30);
+        gc.lineTo(65, 30);
+        gc.lineTo(65, 40);
+        gc.lineTo(45, 40);
+        gc.stroke();
+    }
 }
+
