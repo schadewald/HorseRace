@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
@@ -15,7 +17,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception
+    {
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         GridPane gridPane = new GridPane();
         FlowPane flowPane = new FlowPane();
@@ -28,6 +31,10 @@ public class Main extends Application {
         Button startRace = new Button("Start Race");
         Button resetRace = new Button("Reset Race");
         Button exitRace = new Button("Exit Race");
+        
+        startRace.setOnAction(new startRaceButtonListener());
+        resetRace.setOnAction(new resetRaceButtonListener());
+        exitRace.setOnAction(new exitRaceButtonListener());
 
         Canvas horse1 = new Canvas(500, 75);
         GraphicsContext horse1GraphicsContext = horse1.getGraphicsContext2D();
@@ -74,13 +81,6 @@ public class Main extends Application {
 
         primaryStage.show();
     }
-
-
-    public static void main(String[] args)
-    {
-        launch(args);
-    }
-
     private void drawHorse(GraphicsContext gc)
     {
         drawBody(gc);
@@ -125,6 +125,34 @@ public class Main extends Application {
         gc.lineTo(65, 40);
         gc.lineTo(45, 40);
         gc.stroke();
+    }
+    private class startRaceButtonListener implements EventHandler<ActionEvent>
+    {
+        @Override
+        public void handle(ActionEvent event)
+        {
+            System.out.println("Start Button Pressed");
+        }
+    }
+    private class resetRaceButtonListener implements EventHandler<ActionEvent>
+    {
+        @Override
+        public void handle(ActionEvent event)
+        {
+            System.out.println("Reset Button Pressed");
+        }
+    }
+    private class exitRaceButtonListener implements EventHandler<ActionEvent>
+    {
+        @Override
+        public void handle(ActionEvent event)
+        {
+            System.out.println("Exit Button Pressed");
+        }
+    }
+    public static void main(String[] args)
+    {
+        launch(args);
     }
 }
 
