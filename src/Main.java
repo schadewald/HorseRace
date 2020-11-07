@@ -1,7 +1,6 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +10,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,7 +17,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-//        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         GridPane gridPane = new GridPane();
         FlowPane flowPane = new FlowPane();
         Scene mainScene = new Scene(gridPane);
