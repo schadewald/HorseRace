@@ -31,7 +31,7 @@ public class Main extends Application {
         Button startRace = new Button("Start Race");
         Button resetRace = new Button("Reset Race");
         Button exitRace = new Button("Exit Race");
-        
+
         startRace.setOnAction(new startRaceButtonListener());
         resetRace.setOnAction(new resetRaceButtonListener());
         exitRace.setOnAction(new exitRaceButtonListener());
