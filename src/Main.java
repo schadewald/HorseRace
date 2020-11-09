@@ -1,15 +1,13 @@
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.*;
 import javafx.scene.canvas.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.*;
@@ -20,9 +18,6 @@ import javafx.util.Duration;
  * Main.java
  * Project 3
  */
-
-/** I can't figure out how to move the horse, so I didn't even get close to working on threading.*/
-
 public class Main extends Application
 {
     GridPane gridPane = new GridPane();
@@ -34,11 +29,13 @@ public class Main extends Application
     Group horse4Group = new Group();
     Group horse5Group = new Group();
 
-    Canvas horse1 = new Canvas(500, 75);
-    Canvas horse2 = new Canvas(500, 75);
-    Canvas horse3 = new Canvas(500, 75);
-    Canvas horse4 = new Canvas(500, 75);
-    Canvas horse5 = new Canvas(500, 75);
+    Canvas track1 = new Canvas(500, 75);
+    Canvas track2 = new Canvas(500, 75);
+    Canvas track3 = new Canvas(500, 75);
+    Canvas track4 = new Canvas(500, 75);
+    Canvas track5 = new Canvas(500, 75);
+
+    ParallelTransition parallelTransition;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -55,47 +52,51 @@ public class Main extends Application
         resetRace.setOnAction(new resetRaceButtonListener());
         exitRace.setOnAction(new exitRaceButtonListener());
 
-        GraphicsContext horse1GraphicsContext = horse1.getGraphicsContext2D();
-        GraphicsContext horse2GraphicsContext = horse2.getGraphicsContext2D();
-        GraphicsContext horse3GraphicsContext = horse3.getGraphicsContext2D();
-        GraphicsContext horse4GraphicsContext = horse4.getGraphicsContext2D();
-        GraphicsContext horse5GraphicsContext = horse5.getGraphicsContext2D();
+//        GraphicsContext horse1GraphicsContext = track1.getGraphicsContext2D();
+//        GraphicsContext horse2GraphicsContext = track2.getGraphicsContext2D();
+//        GraphicsContext horse3GraphicsContext = track3.getGraphicsContext2D();
+//        GraphicsContext horse4GraphicsContext = track4.getGraphicsContext2D();
+//        GraphicsContext horse5GraphicsContext = track5.getGraphicsContext2D();
 
-        Rectangle[] horse1Array = drawHorse((horse1GraphicsContext));
-        Rectangle[] horse2Array = drawHorse((horse2GraphicsContext));
-        Rectangle[] horse3Array = drawHorse((horse3GraphicsContext));
-        Rectangle[] horse4Array = drawHorse((horse4GraphicsContext));
-        Rectangle[] horse5Array = drawHorse((horse5GraphicsContext));
+        Horse horse1 = new Horse();
+        Horse horse2 = new Horse();
+        Horse horse3 = new Horse();
+        Horse horse4 = new Horse();
+        Horse horse5 = new Horse();
+//        Rectangle[] horse2Array = drawHorse((horse2GraphicsContext));
+//        Rectangle[] horse3Array = drawHorse((horse3GraphicsContext));
+//        Rectangle[] horse4Array = drawHorse((horse4GraphicsContext));
+//        Rectangle[] horse5Array = drawHorse((horse5GraphicsContext));
 
-        horse1Group.getChildren().add(horse1);
-        horse1Group.getChildren().add(horse1Array[0]);
-        horse1Group.getChildren().add(horse1Array[1]);
-        horse1Group.getChildren().add(horse1Array[2]);
-        horse1Group.getChildren().add(horse1Array[3]);
+        horse1Group.getChildren().add(track1);
+        horse1Group.getChildren().add(horse1.getBody());
+        horse1Group.getChildren().add(horse1.getHead());
+        horse1Group.getChildren().add(horse1.getFrontLegs());
+        horse1Group.getChildren().add(horse1.getBackLegs());
 
-        horse2Group.getChildren().add(horse2);
-        horse2Group.getChildren().add(horse2Array[0]);
-        horse2Group.getChildren().add(horse2Array[1]);
-        horse2Group.getChildren().add(horse2Array[2]);
-        horse2Group.getChildren().add(horse2Array[3]);
+        horse2Group.getChildren().add(track2);
+        horse2Group.getChildren().add(horse2.getBody());
+        horse2Group.getChildren().add(horse2.getHead());
+        horse2Group.getChildren().add(horse2.getFrontLegs());
+        horse2Group.getChildren().add(horse2.getBackLegs());
 
-        horse3Group.getChildren().add(horse3);
-        horse3Group.getChildren().add(horse3Array[0]);
-        horse3Group.getChildren().add(horse3Array[1]);
-        horse3Group.getChildren().add(horse3Array[2]);
-        horse3Group.getChildren().add(horse3Array[3]);
+        horse3Group.getChildren().add(track3);
+        horse3Group.getChildren().add(horse3.getBody());
+        horse3Group.getChildren().add(horse3.getHead());
+        horse3Group.getChildren().add(horse3.getFrontLegs());
+        horse3Group.getChildren().add(horse3.getBackLegs());
 
-        horse4Group.getChildren().add(horse4);
-        horse4Group.getChildren().add(horse4Array[0]);
-        horse4Group.getChildren().add(horse4Array[1]);
-        horse4Group.getChildren().add(horse4Array[2]);
-        horse4Group.getChildren().add(horse4Array[3]);
+        horse4Group.getChildren().add(track4);
+        horse4Group.getChildren().add(horse4.getBody());
+        horse4Group.getChildren().add(horse4.getHead());
+        horse4Group.getChildren().add(horse4.getFrontLegs());
+        horse4Group.getChildren().add(horse4.getBackLegs());
 
-        horse5Group.getChildren().add(horse5);
-        horse5Group.getChildren().add(horse5Array[0]);
-        horse5Group.getChildren().add(horse5Array[1]);
-        horse5Group.getChildren().add(horse5Array[2]);
-        horse5Group.getChildren().add(horse5Array[3]);
+        horse5Group.getChildren().add(track5);
+        horse5Group.getChildren().add(horse5.getBody());
+        horse5Group.getChildren().add(horse5.getHead());
+        horse5Group.getChildren().add(horse5.getFrontLegs());
+        horse5Group.getChildren().add(horse5.getBackLegs());
 
         flowPane.setVgap(8);
         flowPane.setHgap(4);
@@ -103,11 +104,40 @@ public class Main extends Application
         flowPane.getChildren().add(resetRace);
         flowPane.getChildren().add(exitRace);
 
-        gridPane.add(horse1, 1, 0);
-        gridPane.add(horse2, 1, 1);
-        gridPane.add(horse3, 1, 2);
-        gridPane.add(horse4, 1, 3);
-        gridPane.add(horse5, 1, 4);
+        TranslateTransition bodyTransition = new TranslateTransition();
+        bodyTransition.setDuration(Duration.seconds(5));
+        bodyTransition.setToX(420);
+        bodyTransition.setNode(horse1.getBody());
+
+        TranslateTransition headTransition = new TranslateTransition();
+        headTransition.setDuration(Duration.seconds(5));
+        headTransition.setToX(420);
+        headTransition.setNode(horse1.getHead());
+
+        TranslateTransition frontLegTransition = new TranslateTransition();
+        frontLegTransition.setDuration(Duration.seconds(5));
+        frontLegTransition.setToX(420);
+        frontLegTransition.setNode(horse1.getFrontLegs());
+
+        TranslateTransition backLegTransition = new TranslateTransition();
+        backLegTransition.setDuration(Duration.seconds(5));
+        backLegTransition.setToX(420);
+        backLegTransition.setNode(horse1.getBackLegs());
+
+        parallelTransition = new ParallelTransition
+                (
+                        bodyTransition,
+                        headTransition,
+                        frontLegTransition,
+                        backLegTransition
+                );
+//        parallelTransition.play();
+
+        gridPane.add(horse1Group, 1, 0);
+        gridPane.add(horse2Group, 1, 1);
+        gridPane.add(horse3Group, 1, 2);
+        gridPane.add(horse4Group, 1, 3);
+        gridPane.add(horse5Group, 1, 4);
         gridPane.add(flowPane, 1, 5);
 
         primaryStage.setTitle("Welcome to Horse Race!");
@@ -116,46 +146,45 @@ public class Main extends Application
 
         primaryStage.show();
     }
-    private Rectangle[] drawHorse(GraphicsContext gc)
-    {
-        Rectangle[] horse = new Rectangle[4];
-        horse[0] = drawBody(gc);
-        horse[1] = drawFrontLegs(gc);
-        horse[2] = drawBackLegs(gc);
-        horse[3] = drawHead(gc);
-        return horse;
-    }
-    private Rectangle drawBody(GraphicsContext gc)
-    {
-        gc.rect(5,40,45,20);
-        gc.stroke();
-        return new Rectangle(5, 40, 45, 20);
-    }
-    private Rectangle drawFrontLegs(GraphicsContext gc)
-    {
-        gc.rect(40,60,10,10);
-        gc.stroke();
-        return new Rectangle(40, 60, 10, 10);
-    }
-    private Rectangle drawBackLegs(GraphicsContext gc)
-    {
-        gc.rect(5,60,10,10);
-        gc.stroke();
-        return new Rectangle(5, 60, 10,10);
-    }
-    private Rectangle drawHead(GraphicsContext gc)
-    {
-        gc.rect(45,30,20,10);
-        gc.stroke();
-        return new Rectangle(45, 30, 20, 10);
-    }
+//    private Rectangle[] drawHorse(GraphicsContext gc)
+//    {
+//        Rectangle[] horse = new Rectangle[4];
+//        horse[0] = drawBody(gc);
+//        horse[1] = drawFrontLegs(gc);
+//        horse[2] = drawBackLegs(gc);
+//        horse[3] = drawHead(gc);
+//        return horse;
+//    }
+//    private Rectangle drawBody(GraphicsContext gc)
+//    {
+////        gc.rect(5,40,45,20);
+////        gc.stroke();
+//        return new Rectangle(5, 40, 45, 20);
+//    }
+//    private Rectangle drawFrontLegs(GraphicsContext gc)
+//    {
+////        gc.rect(40,60,10,10);
+////        gc.stroke();
+//        return new Rectangle(40, 60, 10, 10);
+//    }
+//    private Rectangle drawBackLegs(GraphicsContext gc)
+//    {
+////        gc.rect(5,60,10,10);
+////        gc.stroke();
+//        return new Rectangle(5, 60, 10,10);
+//    }
+//    private Rectangle drawHead(GraphicsContext gc)
+//    {
+////        gc.rect(45,30,20,10);
+////        gc.stroke();
+//        return new Rectangle(45, 30, 20, 10);
+//    }
     private class startRaceButtonListener implements EventHandler<ActionEvent>
     {
         @Override
         public void handle(ActionEvent event)
-        {   horse1 = new Canvas(500, 75);
-            horse1.getGraphicsContext2D().rect(55,30,20,10);
-            horse1.getGraphicsContext2D().stroke();
+        {
+            parallelTransition.play();
             System.out.println("Start Button Pressed");
         }
     }
@@ -164,7 +193,7 @@ public class Main extends Application
         @Override
         public void handle(ActionEvent event)
         {
-            horse1.getGraphicsContext2D().restore();
+            track1.getGraphicsContext2D().restore();
             System.out.println("Reset Button Pressed");
         }
     }
