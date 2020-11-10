@@ -29,14 +29,14 @@ public class RaceRunnable implements Runnable
     public void run()
     {
         Collections.shuffle(tracks);
-        for (int i = 0; i < tracks.size(); i++)
-        {
-            tracks.get(i).play();
+        for (ParallelTransition track : tracks) {
+            track.play();
             try {
                 Thread.sleep(waitTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        };
+        }
+        ;
     }
 }

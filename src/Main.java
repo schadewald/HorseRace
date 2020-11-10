@@ -1,5 +1,4 @@
 import javafx.animation.ParallelTransition;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +10,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.canvas.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 /**
  * Chad Schadewald
  * Main.java
@@ -56,6 +54,7 @@ public class Main extends Application
     Transition horse4Transition = new Transition(horse4);
     Transition horse5Transition = new Transition(horse5);
 
+    Thread raceThread;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -114,49 +113,62 @@ public class Main extends Application
         flowPane.getChildren().add(resetRace);
         flowPane.getChildren().add(exitRace);
 
-//        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
-
         track1Transition = new ParallelTransition
                 (
                         horse1Transition.getBodyTransition(),
                         horse1Transition.getHeadTransition(),
-                        horse1Transition.frontLegTransition,
+                        horse1Transition.getFrontLegTransition(),
                         horse1Transition.getBackLegTransition()
                 );
         track2Transition = new ParallelTransition
                 (
                         horse2Transition.getBodyTransition(),
                         horse2Transition.getHeadTransition(),
-                        horse2Transition.frontLegTransition,
+                        horse2Transition.getFrontLegTransition(),
                         horse2Transition.getBackLegTransition()
                 );
         track3Transition = new ParallelTransition
                 (
                         horse3Transition.getBodyTransition(),
                         horse3Transition.getHeadTransition(),
-                        horse3Transition.frontLegTransition,
+                        horse3Transition.getFrontLegTransition(),
                         horse3Transition.getBackLegTransition()
                 );
         track4Transition = new ParallelTransition
                 (
                         horse4Transition.getBodyTransition(),
                         horse4Transition.getHeadTransition(),
-                        horse4Transition.frontLegTransition,
+                        horse4Transition.getFrontLegTransition(),
                         horse4Transition.getBackLegTransition()
                 );
         track5Transition = new ParallelTransition
                 (
                         horse5Transition.getBodyTransition(),
                         horse5Transition.getHeadTransition(),
-                        horse5Transition.frontLegTransition,
+                        horse5Transition.getFrontLegTransition(),
                         horse5Transition.getBackLegTransition()
                 );
 
-        track1Transition.setOnFinished(event -> System.out.println("Horse 1 is the Winner!"));
-        track2Transition.setOnFinished(event -> System.out.println("Horse 2 is the Winner!"));
-        track3Transition.setOnFinished(event -> System.out.println("Horse 3 is the Winner!"));
-        track4Transition.setOnFinished(event -> System.out.println("Horse 4 is the Winner!"));
-        track5Transition.setOnFinished(event -> System.out.println("Horse 5 is the Winner!"));
+        track1Transition.setOnFinished(event ->
+        {
+            System.out.println("Horse 1 is the Winner!");
+        });
+        track2Transition.setOnFinished(event ->
+        {
+            System.out.println("Horse 2 is the Winner!");
+        });
+        track3Transition.setOnFinished(event ->
+        {
+            System.out.println("Horse 3 is the Winner!");
+        });
+        track4Transition.setOnFinished(event ->
+        {
+            System.out.println("Horse 4 is the Winner!");
+        });
+        track5Transition.setOnFinished(event ->
+        {
+            System.out.println("Horse 5 is the Winner!");
+        });
 
         gridPane.add(horse1Group, 1, 0);
         gridPane.add(horse2Group, 1, 1);
@@ -168,7 +180,6 @@ public class Main extends Application
         primaryStage.setTitle("Welcome to Horse Race!");
         Scene mainScene = new Scene(gridPane);
         primaryStage.setScene(mainScene);
-
         primaryStage.show();
     }
     private class startRaceButtonListener implements EventHandler<ActionEvent>
@@ -176,15 +187,15 @@ public class Main extends Application
         @Override
         public void handle(ActionEvent event)
         {
-            RaceRunnable startRace = new RaceRunnable
+            raceThread = new Thread(new RaceRunnable
                     (
                             track1Transition,
                             track2Transition,
                             track3Transition,
                             track4Transition,
                             track5Transition
-                    );
-            startRace.run();
+                    ));
+            raceThread.start();
             System.out.println("Start Button Pressed");
         }
     }
@@ -193,7 +204,6 @@ public class Main extends Application
         @Override
         public void handle(ActionEvent event)
         {
-
             System.out.println("Reset Button Pressed");
         }
     }
@@ -202,6 +212,8 @@ public class Main extends Application
         @Override
         public void handle(ActionEvent event)
         {
+            Stage stage = (Stage) exitRace.getScene().getWindow();
+            stage.close();
             System.out.println("Exit Button Pressed");
         }
     }
