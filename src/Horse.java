@@ -1,5 +1,9 @@
 import javafx.scene.shape.Rectangle;
-
+/**
+ * Chad Schadewald
+ * Horse.java
+ * Project 3
+ */
 public class Horse
 {
     Rectangle[] horse = new Rectangle[4];
